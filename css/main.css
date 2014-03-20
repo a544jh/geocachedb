@@ -1,0 +1,17 @@
+.navbar-geocahedb {
+    background-color: #A8E679;
+    border-radius: 0px;
+}
+
+.navbar-geocahedb .navbar-nav > li > a {
+  color: #777;
+}
+.navbar-geocahedb .navbar-nav > li > a:hover,
+.navbar-geocahedb .navbar-nav > li > a:focus {
+  color: #333;
+  background-color: #6DB636;
+}
+
+.navbar-geocahedb .navbar-brand {
+  color: #777;
+}
