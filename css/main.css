@@ -15,3 +15,8 @@
 .navbar-geocahedb .navbar-brand {
   color: #777;
 }
+
+.panel-geocachedb{
+    border-color: #ddd;
+    margin: 2px;
+}
