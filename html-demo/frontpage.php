@@ -20,9 +20,9 @@
                 <tr>
                     <th>Type</th>
                     <th>Name</th>
-                    <th>D</th>
-                    <th>T</th>
-                    <th>F</th>
+                    <th>Difficulty</th>
+                    <th>Terrain</th>
+                    <th>Found</th>
                     <th>Distance</th>
                 </tr>
             </thead>

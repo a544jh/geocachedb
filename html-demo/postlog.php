@@ -13,13 +13,14 @@
     </head>
     <body>
         <?php include 'navbar.php'; ?>
-        <h4>Logging [geocaheid/trackableid]</h4>
+        <h4>Logging [geocaheid]</h4>
         <form class="form-inline" role="form">
             <div class="form-group">
                 <label for="logType">Log type</label>
                 <select class="form-control" id="logType">
                     <option>Found</option>
                     <option>Didn't find</option>
+                    <option>Leave comment</option>
                 </select>
                 <label class="checkbox-inline">
                     <input type="checkbox" id="needsMaintenance" value="needsMaintenance">
@@ -64,6 +65,7 @@
                             <td>Trackable name</td>
                             <td><select class="form-control" id="trackableidAction">
                                     <option>Do nothing</option>
+                                    <option>Visit</option>
                                     <option>Drop it</option>
                                 </select>
                             </td>
