@@ -19,7 +19,7 @@ ownerid integer REFERENCES users,
 difficulty integer,
 terrain integer,
 latitude decimal,
-longitude integer,
+longitude decimal,
 archived boolean
 );
 
