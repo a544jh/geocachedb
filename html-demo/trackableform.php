@@ -44,28 +44,6 @@
         </div>
         <button type="button" class="btn btn-default">Submit</button>
         <h4>Logs</h4>
-        <div class="panel panel-geocachedb">
-            <div class="row">
-                <div class="col-md-2">
-                    [timestamp]
-                    <br>
-                    <button type="button" class="btn btn-default btn-xs">Delete <span class="glyphicon glyphicon-remove"></span></button>
-                    <div class="panel panel-geocachedb">
-                        Username<br>
-                        250 found
-                    </div>
-                </div>
-                <div class="col-md-10">
-                    <div class="panel panel-geocachedb">
-                        User found <a href="geocacheview.php">cache</a>!
-                    </div>
-                    <div class="panel panel-geocachedb">
-                        [Comment] Kiva kätkö! KK!
-                    </div>
-                    <div class="panel panel-geocachedb">
-                        Dropped off trackable
-                    </div>
-                </div>
-            </div></div>
+        <?php include 'samplelog.php'; ?>
     </body>
 </html>

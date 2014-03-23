@@ -22,10 +22,6 @@
                     <option>Didn't find</option>
                     <option>Leave comment</option>
                 </select>
-                <label class="checkbox-inline">
-                    <input type="checkbox" id="needsMaintenance" value="needsMaintenance">
-                    Needs maintenance
-                </label>
                 <br>
                 <label for="logComment">Comment</label>
                 <textarea class="form-control" id="logComment"></textarea>

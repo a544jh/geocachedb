@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Geocache name - geocachedb</title>
+        <title>Trackable name - geocachedb</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width">
         <link href="../css/bootstrap.css" rel="stylesheet">

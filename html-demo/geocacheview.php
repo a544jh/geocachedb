@@ -20,19 +20,23 @@
                         [Geocache type]<br>
                         [dateadded]<br>
                         [coordinates]<br>
-                        [flags]
                     </div>
                     <div class="panel panel-geocachedb">
                         Trackables in cache<br>
                         <a href="trackableview.php">Trackable</a>
                     </div>
-                    <a href="postlog.php" role="button" class="btn btn-default btn-block">Post log</a>
+                    <a href="postlog.php" role="button" class="btn btn-default btn-block">Post log 
+                        <span class="glyphicon glyphicon-comment"></span></a>
+                    <a href="geocacheform.php" role="button" class="btn btn-default btn-block">Edit 
+                        <span class="glyphicon glyphicon-edit"></span></a>
+                    <a href="#" role="button" class="btn btn-default btn-block">Archive 
+                        <span class="glyphicon glyphicon-remove"></span></a>
 
                 </div>
                 <div class="col-md-10">
                     <div class="panel panel-geocachedb">
                         <h3>Geocahe name</h3><br>
-                        by someuser
+                        by <a href="userprofile.php">someuser</a>
                     </div>
 
 
@@ -54,28 +58,7 @@
             </div>
         </div>
         <h4>Logs</h4>
-        <div class="panel panel-geocachedb">
-            <div class="row">
-
-                <div class="col-md-2">
-                    [timestamp]
-                    <div class="panel panel-geocachedb">
-                        Username<br>
-                        250 found
-                    </div>
-                </div>
-                <div class="col-md-10">
-                    <div class="panel panel-geocachedb">
-                        User found cache!
-                    </div>
-                    <div class="panel panel-geocachedb">
-                        [Comment] Kiva kätkö! KK!
-                    </div>
-                    <div class="panel panel-geocachedb">
-                        Dropped off <a href="trackableview.php">trackable</a>
-                    </div>
-                </div>
-            </div></div>
+        <?php include 'samplelog.php'; ?>
         <div class="panel panel-geocachedb">
             <div class="row">
                 <div class="col-md-2">
