@@ -4,7 +4,11 @@
             <div class="form-group">
                 <label for="usernameField">Username:</label>
                 <input type="text" class="form-control" id="usernameField" name="username"
-                       value="<?php echo $data->username; ?>">
+                       value="<?php
+                       if (isset($data->username)) {
+                           echo $data->username;
+                       }
+                       ?>">
                 <br>
                 <label for="passwordField">Password:</label>
                 <input type="password" class="form-control" id="passwordField" name="password">

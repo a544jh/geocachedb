@@ -3,6 +3,14 @@
 require_once 'libs/utils.php';
 require_once 'libs/models/user.php';
 
+if (isset($_GET['logout']) && $_GET['logout'] == 'success') {
+    showView("login.php", array('success' => "Logout successful!"));
+}
+
+if (empty($_POST)) {
+    showView("login.php");
+}
+
 if (empty($_POST["username"])) {
     showView("login.php", array('error' => "No username given."));
 }
@@ -17,10 +25,11 @@ $password = $_POST["password"];
 
 $user = User::getUserByName($username);
 
-if ($user->getPassword() == $password) {
+if ($user != null &&
+        crypt($password, $user->getPassword()) == $user->getPassword()) {
     $_SESSION['user'] = $user;
-    header('Location: frontpage.php');
+    header('Location: index.php?login=success');
 } else {
-    showView("login.php", array('user' => $username,
+    showView("login.php", array('username' => $username,
         'error' => "Wrong username or password."));
 }
