@@ -11,16 +11,18 @@ bio varchar(5000)
 CREATE TABLE geocaches
 (
 id SERIAL PRIMARY KEY,
+type varchar(30),
 name varchar(50),
 description varchar(5000),
 hint varchar(500),
-added date,
+added date DEFAULT current_date,
 ownerid integer REFERENCES users,
 difficulty integer,
 terrain integer,
 latitude decimal,
 longitude decimal,
-archived boolean
+ispublic boolean DEFAULT false,
+archived boolean DEFAULT false
 );
 
 CREATE TABLE trackables

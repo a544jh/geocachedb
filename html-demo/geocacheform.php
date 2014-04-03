@@ -73,7 +73,7 @@
                     </div>
                 </div>
             </div>
-            <button type="button" class="btn btn-default">Submit</button>
+<button type="button" class="btn btn-default">Submit</button>
             <h4>Logs</h4>
             <?php include 'samplelog.php'; ?>
     </body>

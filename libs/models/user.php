@@ -83,7 +83,23 @@ class User{
             return $user;
         }
     }
+    
+    public static function getUserById($id){
+         $sql = "SELECT * FROM users WHERE id = ? ";
+        $query = getDbConnection()->prepare($sql);
+        $query->execute(array($id));
         
+        $result = $query->fetchObject();
+        if ($result == null) {
+            return null;
+        } else {
+            $user = new User($result->id, $result->name, $result->password,
+                    $result->registred, $result->role, $result->bio);
+            
+            return $user;
+        }
+    }
+
     public static function getUsersList() {
         $sql = "SELECT * FROM users";
         $query = getDbConnection()->prepare($sql);

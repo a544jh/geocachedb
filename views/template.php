@@ -25,7 +25,7 @@
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Add new <b class="caret"></b></a>
                             <ul class="dropdown-menu">
-                                <li><a href="geocacheform.php">Geocache</a></li>
+                                <li><a href="addcache.php">Geocache</a></li>
                                 <li><a href="trackableform.php">Trackable</a></li>
                             </ul>
                         </li>
@@ -45,6 +45,10 @@
         <?php if (!empty($data->error)): ?>
         <div class="alert alert-danger"><?php echo $data->error; ?></div>
         <?php endif; ?>
+        
+        <?php if(!empty($data->errors)): foreach ($data->errors as $error):?>
+        <div class="alert alert-danger"><?php echo $error; ?></div>
+        <?php endforeach; endif; ?>
         
         <?php if (!empty($data->success)): ?>
         <div class="alert alert-success"><?php echo $data->success; ?></div>
