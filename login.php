@@ -28,7 +28,8 @@ $user = User::getUserByName($username);
 if ($user != null &&
         crypt($password, $user->getPassword()) == $user->getPassword()) {
     $_SESSION['user'] = $user;
-    header('Location: index.php?login=success');
+    $_SESSION['success'] = "Login successful!";
+    header('Location: index.php');
 } else {
     showView("login.php", array('username' => $username,
         'error' => "Wrong username or password."));

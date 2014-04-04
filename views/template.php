@@ -50,8 +50,9 @@
         <div class="alert alert-danger"><?php echo $error; ?></div>
         <?php endforeach; endif; ?>
         
-        <?php if (!empty($data->success)): ?>
-        <div class="alert alert-success"><?php echo $data->success; ?></div>
+        <?php if (!empty($_SESSION['success'])): ?>
+        <div class="alert alert-success"><?php echo $_SESSION['success']; ?></div>
+        <?php unset($_SESSION['success']); ?>
         <?php endif; ?>
         
         <div id ="content">
