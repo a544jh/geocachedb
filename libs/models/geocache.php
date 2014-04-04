@@ -15,7 +15,7 @@ class Geocache {
     private $longitude;
     private $ispublic;
     private $archived;
-    
+
 //    function __construct($id, $type, $name, $description, $hint, $dateadded, $owner, $difficulty, $terrain, $latitude, $logitude, $ispublic, $archived) {
 //        $this->id = $id;
 //        $this->type = $type;
@@ -94,7 +94,7 @@ class Geocache {
 
     public function setName($name) {
         $this->name = $name;
-        
+
         if (trim($this->name) == '') {
             $this->errors['name'] = "Name may not be empty.";
         } else {
@@ -104,7 +104,7 @@ class Geocache {
 
     public function setDescription($description) {
         $this->description = $description;
-        
+
         if (trim($this->description) == '') {
             $this->errors['description'] = "Description may not be empty.";
         } else {
@@ -114,7 +114,7 @@ class Geocache {
 
     public function setHint($hint) {
         $this->hint = $hint;
-        
+
 //        if (trim($this->hint) == '') {
 //            $this->errors['hint'] = "Hint may not be empty.";
 //        } else {
@@ -140,8 +140,8 @@ class Geocache {
 
     public function setLatitude($latitude) {
         $this->latitude = $latitude;
-        
-        if(!is_numeric($latitude)) {
+
+        if (!is_numeric($latitude)) {
             $this->errors['latitude'] = "Latitude must be numeric.";
         } else {
             unset($this->errors['latitude']);
@@ -150,8 +150,8 @@ class Geocache {
 
     public function setLongitude($longitude) {
         $this->longitude = $longitude;
-        
-        if(!is_numeric($longitude)) {
+
+        if (!is_numeric($longitude)) {
             $this->errors['longitude'] = "Longitude must be numeric.";
         } else {
             unset($this->errors['longitude']);
@@ -165,8 +165,8 @@ class Geocache {
     public function setArchived($archived) {
         $this->archived = $archived;
     }
-    
-    function setAllFields($result){
+
+    function setAllFields($result) {
         $this->id = $result->id;
         $this->type = $result->type;
         $this->name = $result->name;
@@ -225,7 +225,25 @@ class Geocache {
         }
         return $ok;
     }
+
+    public function updateInDb() {
+        $sql = "UPDATE geocaches SET type = ?, name = ?, description = ?, "
+                . "difficulty = ?, terrain = ?, latitude = ?, longitude = ?"
+                . "WHERE id = ?";
+        $query = getDbConnection()->prepare($sql);
+        return $query->execute(array($this->getType(), $this->getName(),
+            $this->getDescription(), $this->getDifficulty(), $this->getTerrain(),
+            $this->getLatitude(), $this->getLongitude(), $this->getId()));
+    }
     
+    public function archive() {
+        $this->setArchived(true);
+        
+        $sql = "UPDATE geocaches SET archived = true WHERE id = ?";
+        $query = getDbConnection()->prepare($sql);
+        return $query->execute(array($this->getId()));
+    }
+
     public function isValid() {
         return empty($this->errors);
     }
