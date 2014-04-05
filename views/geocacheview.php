@@ -14,7 +14,7 @@
                     </div>
                     <a href="postlog.php" role="button" class="btn btn-default btn-block">Post log 
                         <span class="glyphicon glyphicon-comment"></span></a>
-                    <a href="geocacheform.php" role="button" class="btn btn-default btn-block">Edit 
+                    <a href="editcache.php?id=<?php echo $geocache->getId()?>" role="button" class="btn btn-default btn-block">Edit 
                         <span class="glyphicon glyphicon-edit"></span></a>
                     <a href="archivecache.php?id=<?php echo $geocache->getId()?>" role="button" class="btn btn-default btn-block">Archive 
                         <span class="glyphicon glyphicon-remove"></span></a>

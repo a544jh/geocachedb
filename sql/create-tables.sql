@@ -21,7 +21,7 @@ difficulty integer,
 terrain integer,
 latitude decimal,
 longitude decimal,
-ispublic boolean DEFAULT false,
+published boolean DEFAULT false,
 archived boolean DEFAULT false
 );
 

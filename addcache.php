@@ -9,7 +9,7 @@ if(!loggedIn()) {
 $newGeocache = new Geocache();
 
 if(empty($_POST)) {
-    showView('addcacheform.php', array('geocache' => $newGeocache));
+    showView('cacheform.php', array('action' => 'addcache.php', 'geocache' => $newGeocache));
 }
 
 $newGeocache->setType($_POST['type']);
@@ -28,6 +28,6 @@ if ($newGeocache->isValid()) {
     header('Location: geocachelist.php');
 } else {
     $errors = $newGeocache->errors;
-    showView('addcacheform.php', array('geocache' => $newGeocache, 'errors' => $errors));
+    showView('cacheform.php', array('action' => 'addcache.php', 'geocache' => $newGeocache, 'errors' => $errors));
 }
 

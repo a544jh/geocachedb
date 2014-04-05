@@ -13,7 +13,7 @@ class Geocache {
     private $terrain;
     private $latitude;
     private $longitude;
-    private $ispublic;
+    private $published;
     private $archived;
 
 //    function __construct($id, $type, $name, $description, $hint, $dateadded, $owner, $difficulty, $terrain, $latitude, $logitude, $ispublic, $archived) {
@@ -76,8 +76,8 @@ class Geocache {
         return $this->longitude;
     }
 
-    public function getIspublic() {
-        return $this->ispublic;
+    public function getPublished() {
+        return $this->published;
     }
 
     public function getArchived() {
@@ -158,8 +158,8 @@ class Geocache {
         }
     }
 
-    public function setIspublic($ispublic) {
-        $this->ispublic = $ispublic;
+    public function setPublished($published) {
+        $this->published = $published;
     }
 
     public function setArchived($archived) {
@@ -178,7 +178,7 @@ class Geocache {
         $this->terrain = $result->terrain;
         $this->latitude = $result->latitude;
         $this->longitude = $result->longitude;
-        $this->ispublic = $result->ispublic;
+        $this->published = $result->published;
         $this->archived = $result->archived;
     }
 
@@ -186,6 +186,25 @@ class Geocache {
         $sql = "SELECT * FROM geocaches";
         $query = getDbConnection()->prepare($sql);
         $query->execute();
+
+        $results = array();
+        foreach ($query->fetchAll(PDO::FETCH_OBJ) as $result) {
+            $geocache = new Geocache();
+            $geocache->setAllFields($result);
+            $results[] = $geocache;
+        }
+        return $results;
+    }
+    
+    public static function searchByName($name, $published, $achived){
+        $sql = "SELECT * FROM geocaches "
+                . "WHERE name LIKE :name AND published = :published AND archived = :archived";
+        $query = getDbConnection()->prepare($sql);
+        $query->bindParam(':name', $name, PDO::PARAM_STR);
+        $query->bindParam(':published', $published, PDO::PARAM_BOOL);
+        $query->bindParam(':archived', $achived, PDO::PARAM_BOOL);
+        $query->execute();
+        //$query->execute(array($name, $published, $achived));
 
         $results = array();
         foreach ($query->fetchAll(PDO::FETCH_OBJ) as $result) {
