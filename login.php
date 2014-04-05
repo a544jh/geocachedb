@@ -26,7 +26,7 @@ $password = $_POST["password"];
 $user = User::getUserByName($username);
 
 if ($user != null &&
-        crypt($password, $user->getPassword()) == $user->getPassword()) {
+        crypt($password, $user->getPassword()) === $user->getPassword()) {
     $_SESSION['user'] = $user;
     $_SESSION['success'] = "Login successful!";
     header('Location: index.php');

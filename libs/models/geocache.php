@@ -114,12 +114,6 @@ class Geocache {
 
     public function setHint($hint) {
         $this->hint = $hint;
-
-//        if (trim($this->hint) == '') {
-//            $this->errors['hint'] = "Hint may not be empty.";
-//        } else {
-//            unset($this->errors['hint']);
-//        }
     }
 
     public function setDateadded($dateadded) {
@@ -204,12 +198,30 @@ class Geocache {
         $query->bindParam(':published', $published, PDO::PARAM_BOOL);
         $query->bindParam(':archived', $achived, PDO::PARAM_BOOL);
         $query->execute();
-        //$query->execute(array($name, $published, $achived));
 
         $results = array();
         foreach ($query->fetchAll(PDO::FETCH_OBJ) as $result) {
             $geocache = new Geocache();
             $geocache->setAllFields($result);
+            $results[] = $geocache;
+        }
+        return $results;
+    }
+    
+    public static function searchByCoords($lat, $lon) {
+        $sql = "SELECT * , (6371 * acos(cos(radians(latitude)) * cos(radians(:lat)) * cos(radians(longitude) - radians(:lon)) + sin(radians(latitude)) * sin(radians(:lat)))) distance "
+                . "FROM geocaches "
+                . "ORDER BY distance";
+        $query = getDbConnection()->prepare($sql);
+        $query->bindParam(':lat', $lat);
+        $query->bindParam(':lon', $lon);
+        $query->execute();
+
+        $results = array();
+        foreach ($query->fetchAll(PDO::FETCH_OBJ) as $result) {
+            $geocache = new Geocache();
+            $geocache->setAllFields($result);
+            $geocache->distance = $result->distance;
             $results[] = $geocache;
         }
         return $results;
