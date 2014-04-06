@@ -7,11 +7,11 @@ require_once 'libs/utils.php';
 $id = (int) $_GET['id'];
 $geocache = Geocache::getGeocacheById($id);
 
-if ($geocache->userIsOwner()) {
-    $geocache->archive();
-    $_SESSION['success'] = "Geocache archived!";
+if (userHasMinRole(5)) {
+    $geocache->publish();
+    $_SESSION['success'] = "Geocache published!";
     header("Location: geocacheview.php?id=".$geocache->getId());
 } else {
-    $_SESSION['error'] = "You are not the owner of this geocache";
+    $_SESSION['error'] = "You do not have the rights to publish a geocache.";
     header("Location: geocacheview.php?id=".$geocache->getId());
 }

@@ -10,8 +10,8 @@ require_once 'libs/utils.php';
 $id = (int) $_GET['id'];
 $geocache = Geocache::getGeocacheById($id);
 
-if (!(isset($_SESSION['user']) && $geocache->getOwner() == $_SESSION['user']->getId())) {  
-        $_SESSION['error'] = "You are not the owner of this geocache";
+if (!$geocache->userIsOwner()) {  
+        $_SESSION['error'] = "You are not the owner of this geocache.";
         header("Location: geocacheview.php?id=".$geocache->getId());
         exit();
     }

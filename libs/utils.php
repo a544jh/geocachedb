@@ -12,3 +12,7 @@ function showView($page, $data = array()){
 function loggedIn(){
     return isset($_SESSION['user']);
 }
+
+function userHasMinRole($role){
+    return (loggedIn() && $_SESSION['user']->getRole() >= 5);
+}

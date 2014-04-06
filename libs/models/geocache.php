@@ -93,7 +93,7 @@ class Geocache {
     }
 
     public function setName($name) {
-        $this->name = $name;
+        $this->name = filter_var($name,FILTER_SANITIZE_STRING);
 
         if (trim($this->name) == '') {
             $this->errors['name'] = "Name may not be empty.";
@@ -113,7 +113,7 @@ class Geocache {
     }
 
     public function setHint($hint) {
-        $this->hint = $hint;
+        $this->hint = filter_var($hint,FILTER_SANITIZE_STRING);
     }
 
     public function setDateadded($dateadded) {
@@ -211,6 +211,7 @@ class Geocache {
     public static function searchByCoords($lat, $lon) {
         $sql = "SELECT * , (6371 * acos(cos(radians(latitude)) * cos(radians(:lat)) * cos(radians(longitude) - radians(:lon)) + sin(radians(latitude)) * sin(radians(:lat)))) distance "
                 . "FROM geocaches "
+                . "WHERE published = true AND archived = false "
                 . "ORDER BY distance";
         $query = getDbConnection()->prepare($sql);
         $query->bindParam(':lat', $lat);
@@ -267,6 +268,15 @@ class Geocache {
             $this->getLatitude(), $this->getLongitude(), $this->getId()));
     }
     
+    public function  publish() {
+        $this->setPublished(true);
+        
+        $sql = "UPDATE geocaches SET published = true WHERE id = ?";
+        $query = getDbConnection()->prepare($sql);
+        return $query->execute(array($this->getId()));
+    }
+
+
     public function archive() {
         $this->setArchived(true);
         
@@ -277,6 +287,10 @@ class Geocache {
 
     public function isValid() {
         return empty($this->errors);
+    }
+    
+    public function userIsOwner() {
+        return loggedIn() && $_SESSION['user']->getId() === $this->getOwner();
     }
 
 }

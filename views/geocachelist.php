@@ -3,7 +3,7 @@
             <div class="form-group">
                 <label for="searchField">Search:</label>
                 <input type="text" class="form-control" id="searchField" placeholder="Geocahe name" name="name">
-                <label><input type="checkbox" name="published">Published</label>
+                <label><input type="checkbox" name="published" <?php if(empty($_GET) || $_GET['published'] === 'on'): ?>checked<?php endif; ?>>Published</label>
                 <label><input type="checkbox" name="archived">Archived</label>
                 <button class="btn btn-sm" type="submit">Search</button>
             </div>
@@ -11,7 +11,7 @@
 <form class="form-inline" role="form" action="geocachelist.php" method="get">
     <input type="hidden" name="search" value="coords">
     <div class="form-group">
-        <label>Coordinates:</label>
+        <label>By distance:</label>
         <input type="text" class="form-control" placeholder="Latitude" name="lat">
         <input type="text" class="form-control" placeholder="Longitude" name="lon">
         <button class="btn btn-sm" type="submit">Search</button>

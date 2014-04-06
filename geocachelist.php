@@ -8,6 +8,10 @@ if (isset($_GET['search'])) {
         $name = '%' . $_GET['name'] . '%';
         $published = isset($_GET['published']);
         $archived = isset($_GET['archived']);
+        if ($published === false && !userHasMinRole(5)){
+            showView('geocachelist.php', array('geocachelist' => $geocachelist, 
+                'error' => "You do not have the rights to view unpublished caches."));
+        }
         $geocachelist = Geocache::searchByName($name, $published, $archived);
         showView('geocachelist.php', array('geocachelist' => $geocachelist));
     }
@@ -23,6 +27,7 @@ if (isset($_GET['search'])) {
     }
 }
 
-$geocachelist = Geocache::getGeocachesList();
+//$geocachelist = Geocache::getGeocachesList();
+$geocachelist = Geocache::searchByName('%', true, false);
 showView('geocachelist.php', array('geocachelist' => $geocachelist));
 
