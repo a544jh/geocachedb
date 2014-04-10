@@ -12,7 +12,7 @@
                                 <option value="Multi" <?php if($geocache->getType() == 'Multi'): echo ' selected'; endif; ?>>Multi</option>
                                 <option value="Puzzle" <?php if($geocache->getType() == 'Puzzle'): echo ' selected'; endif; ?>>Puzzle</option>
                             </select><br>
-                            [datehidden]<br>
+                            Hidden <?php echo $geocache->getDateadded(); ?><br>
                             <input type="text" class="form-control" id="latitudeField" placeholder="Latitude" name="latitude" value="<?php echo $geocache->getLatitude(); ?>">
                             <input type="text" class="form-control" id="longitudeField" placeholder="Longitude" name="longitude" value="<?php echo $geocache->getLongitude(); ?>">
                         </div></div>
@@ -23,7 +23,7 @@
                         <div class="form-group">
                             <div class="panel panel-geocachedb">
                                 <h3><input type="text" class="form-control" id="cacheNameField" placeholder="Cache name" name="name" value="<?php echo $geocache->getName(); ?>"></h3><br>
-                                by someuser
+                                by <a href="userprofile.php"><?php echo $_SESSION['user']->getUsername(); ?></a>
                             </div>
                         </div>
                     </div>

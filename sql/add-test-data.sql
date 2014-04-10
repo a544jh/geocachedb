@@ -6,3 +6,5 @@ INSERT INTO geocaches (name, type, description, hint, ownerid, difficulty,
 terrain, latitude, longitude, archived)
 VALUES ('Test cache', 'Trad.', 'Description', 'Kiven alla',
 (SELECT id FROM users WHERE name = 'testuser'), 1, 1, 60.2044349, 24.96181584, false);
+INSERT INTO trackables (name, description, added, ownerid, trackingcode)
+VALUES ('Test trackable', 'Take me from cahce to cache', current_date, 1, 'ABC123');

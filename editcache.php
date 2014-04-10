@@ -34,5 +34,5 @@ if ($geocache->isValid()) {
     header("Location: geocacheview.php?id=$id");
 } else {
     $errors = $geocache->errors;
-    showView('cacheform.php', array('action' => "editcache.php?id=$id", 'geocache' => $newGeocache, 'errors' => $errors));
+    showView('cacheform.php', array('action' => "editcache.php?id=$id", 'geocache' => $geocache, 'errors' => $errors));
 }

@@ -21,12 +21,12 @@
                 <div>
                     <ul class="nav navbar-nav">
                         <li><a href="geocachelist.php">Search geocahes</a></li>
-
+                        <li><a href="trackablelist.php">Search trackables</a></li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Add new <b class="caret"></b></a>
                             <ul class="dropdown-menu">
                                 <li><a href="addcache.php">Geocache</a></li>
-                                <li><a href="trackableform.php">Trackable</a></li>
+                                <li><a href="addtrackable.php">Trackable</a></li>
                             </ul>
                         </li>
                     </ul>

@@ -30,9 +30,9 @@ CREATE TABLE trackables
 id SERIAL PRIMARY KEY,
 name varchar(50),
 description varchar(5000),
-added date,
+added date DEFAULT current_date,
 ownerid integer REFERENCES users,
-trackingcode varchar(10)
+trackingcode varchar(6) UNIQUE
 );
 
 CREATE TABLE visittype
