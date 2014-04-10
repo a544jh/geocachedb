@@ -35,21 +35,15 @@ ownerid integer REFERENCES users,
 trackingcode varchar(6) UNIQUE
 );
 
-CREATE TABLE visittype
-(
-id SERIAL PRIMARY KEY,
-type varchar(50)
-);
-
 CREATE TABLE logentry
 (
 id SERIAL PRIMARY KEY,
 userid integer REFERENCES users,
 comment varchar(5000),
-timestamp timestamp,
+timestamp timestamp DEFAULT current_timestamp,
 edited timestamp,
 geocacheid integer REFERENCES geocaches,
-visittypeid integer REFERENCES visittype
+visittype varchar(50)
 );
 
 CREATE TABLE trackableMoveLog
