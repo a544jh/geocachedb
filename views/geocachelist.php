@@ -38,7 +38,7 @@
                     <td><?php if ($geocache->getArchived()):?><del><?php endif;?><a href="geocacheview.php?id=<?php echo $geocache->getId(); ?>"><?php echo $geocache->getName(); ?></a><?php if ($geocache->getArchived()):?></del><?php endif;?></td>
                     <td><?php echo $geocache->getDifficulty(); ?></td>
                     <td><?php echo $geocache->getTerrain(); ?></td>
-                    <td>--</td>
+                    <td><?php echo $geocache->visittypeCount('found'); ?></td>
                     <td><?php if (isset($geocache->distance)): echo(round($geocache->distance,1) . ' km'); else:?>--<?php endif;?></td>
                 </tr>
                 <?php endforeach; ?>

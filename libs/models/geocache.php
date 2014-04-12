@@ -93,7 +93,7 @@ class Geocache {
     }
 
     public function setName($name) {
-        $this->name = filter_var($name,FILTER_SANITIZE_STRING);
+        $this->name = filter_var($name, FILTER_SANITIZE_STRING);
 
         if (trim($this->name) == '') {
             $this->errors['name'] = "Name may not be empty.";
@@ -113,7 +113,7 @@ class Geocache {
     }
 
     public function setHint($hint) {
-        $this->hint = filter_var($hint,FILTER_SANITIZE_STRING);
+        $this->hint = filter_var($hint, FILTER_SANITIZE_STRING);
     }
 
     public function setDateadded($dateadded) {
@@ -189,8 +189,8 @@ class Geocache {
         }
         return $results;
     }
-    
-    public static function searchByName($name, $published, $achived){
+
+    public static function searchByName($name, $published, $achived) {
         $sql = "SELECT * FROM geocaches "
                 . "WHERE name LIKE :name AND published = :published AND archived = :archived";
         $query = getDbConnection()->prepare($sql);
@@ -207,7 +207,7 @@ class Geocache {
         }
         return $results;
     }
-    
+
     public static function searchByCoords($lat, $lon) {
         $sql = "SELECT * , (6371 * acos(cos(radians(latitude)) * cos(radians(:lat)) * cos(radians(longitude) - radians(:lon)) + sin(radians(latitude)) * sin(radians(:lat)))) distance "
                 . "FROM geocaches "
@@ -264,22 +264,21 @@ class Geocache {
                 . "WHERE id = ?";
         $query = getDbConnection()->prepare($sql);
         return $query->execute(array($this->getType(), $this->getName(),
-            $this->getDescription(), $this->getDifficulty(), $this->getTerrain(),
-            $this->getLatitude(), $this->getLongitude(), $this->getId()));
+                    $this->getDescription(), $this->getDifficulty(), $this->getTerrain(),
+                    $this->getLatitude(), $this->getLongitude(), $this->getId()));
     }
-    
-    public function  publish() {
+
+    public function publish() {
         $this->setPublished(true);
-        
+
         $sql = "UPDATE geocaches SET published = true WHERE id = ?";
         $query = getDbConnection()->prepare($sql);
         return $query->execute(array($this->getId()));
     }
 
-
     public function archive() {
         $this->setArchived(true);
-        
+
         $sql = "UPDATE geocaches SET archived = true WHERE id = ?";
         $query = getDbConnection()->prepare($sql);
         return $query->execute(array($this->getId()));
@@ -288,9 +287,24 @@ class Geocache {
     public function isValid() {
         return empty($this->errors);
     }
-    
+
     public function userIsOwner() {
         return loggedIn() && $_SESSION['user']->getId() === $this->getOwner();
+    }
+
+    public function visittypeCount($type) {
+        $sql = "SELECT count(*) count "
+                . "FROM logentry "
+                . "WHERE geocacheid = ? AND visittype = ?;";
+        $query = getDbConnection()->prepare($sql);
+        $query->execute(array($this->getId(), $type));
+
+        $result = $query->fetchObject();
+        if ($result == null) {
+            return 0;
+        } else {
+            return $result->count;
+        }
     }
 
 }

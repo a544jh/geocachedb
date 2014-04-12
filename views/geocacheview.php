@@ -39,7 +39,7 @@
 
             <div class="panel panel-geocachedb">
                 Difficulty:<?php echo $geocache->getDifficulty(); ?>
-                Terrain:<?php echo $geocache->getTerrain(); ?> <font class="lead">-- Found - -- Didn't find</font>
+                Terrain:<?php echo $geocache->getTerrain(); ?> <font class="lead"><?php echo $geocache->visittypeCount('found'); ?> Found it, <?php echo $geocache->visittypeCount('dnf'); ?> Didn't find it</font>
             </div>
             <div class="panel panel-geocachedb">
                 <h4>Description</h4>
