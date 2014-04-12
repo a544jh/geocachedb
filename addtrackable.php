@@ -1,6 +1,7 @@
 <?php
 
 require_once 'libs/models/trackable.php';
+require_once 'libs/models/logentry.php';
 require_once 'libs/utils.php';
 
 if (!loggedIn()) {
@@ -20,11 +21,15 @@ $newTrackable->setOwner($_SESSION['user']->getId());
 do{
     //Generate a unique tracking code
     $trackingcode = Trackable::generateTrackingcode();
-} while (Trackable::getTrackableByTrackingcode($code) != null);
+} while (Trackable::getTrackableByTrackingcode($trackingcode) != null);
 $newTrackable->setTrackingcode($trackingcode);
 
 if ($newTrackable->isValid()) {
     $newTrackable->insertIntoDb();
+    $logentry = new Logentry;
+    $logentry->setUser($_SESSION['user']);
+    $logentry->insertIntoDb();
+    $newTrackable->insertTrackableLog('create', $logentry, null);
     header('Location: trackablelist.php');
 } else {
     $errors = $newTrackable->errors;

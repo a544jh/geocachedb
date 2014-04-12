@@ -16,9 +16,32 @@
             <div class="panel panel-geocachedb">
                 <?php echo htmlspecialchars($logentry->getComment()); ?>
             </div>
-<!--            <div class="panel panel-geocachedb">
-                Dropped off <a href="trackableview.php">trackable</a>
-            </div>-->
+            <?php foreach ($logentry->getTrackableLogs() as $trackablelog): ?>
+                <div class="panel panel-geocachedb">
+                    <?php
+                    switch ($trackablelog->getAction()):
+                        case 'create':
+                            echo "Created " ?><a href="trackableview.php?id=<?php echo $trackablelog->getTrackable() ?>"><?php echo Trackable::getTrackableById($trackablelog->getTrackable())->getName() ?></a>
+                            <?php
+                            break;
+                        case 'grab':
+                            echo "Grabbed from ";
+                            if ($logentry->getGeocacheid != null):
+                                ?><a href="geocacheview.php?id=<?php echo $logentry->getGeocacheid() ?>"><?php echo Geocache::getGeocacheById($logentry->getGeocacheid())->getName() ?></a>
+                            <?php else: ?>
+                                <a href="userprofile.php?id=<?php echo $trackablelog->getFromuser() ?>"><?php echo User::getUserById($trackablelog->getFromuser())->getUsername() ?></a> 
+                            <?php
+                            endif;
+                            break;
+                        case 'drop':
+                            echo "Dropped into "
+                            ?><a href="geocacheview.php?id=<?php echo $logentry->getGeocacheid() ?>"><?php echo Geocache::getGeocacheById($logentry->getGeocacheid())->getName() ?></a>
+                            <?php
+                            break;
+                    endswitch;
+                    ?>
+                </div>
+<?php endforeach; ?>
         </div>
     </div>
 </div>

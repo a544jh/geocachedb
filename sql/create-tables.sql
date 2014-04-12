@@ -46,21 +46,11 @@ geocacheid integer REFERENCES geocaches,
 visittype varchar(50)
 );
 
-CREATE TABLE trackableMoveLog
+CREATE TABLE trackablelog
 (
 logentry integer REFERENCES logentry,
-action integer,
+action varchar(50),
 trackable integer REFERENCES trackables,
 fromuser integer REFERENCES users,
-PRIMARY KEY (logentry, action, trackable)
+PRIMARY KEY (logentry, trackable)
 );
-
-CREATE TABLE trackableVisitedLog
-(
-logentry integer REFERENCES logentry,
-trackable integer REFERENCES trackables,
-type integer,
-PRIMARY KEY (logentry, trackable, type)
-);
-
-

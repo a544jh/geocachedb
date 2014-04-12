@@ -1,9 +1,16 @@
 <?php
 
-class trackablemovelog {
+class Trackablelog {
     private $action;
     private $trackable;
     private $fromuser;
+    
+    function __construct($action, $trackable, $fromuser) {
+        $this->action = $action;
+        $this->trackable = $trackable;
+        $this->fromuser = $fromuser;
+    }
+
     
     public function getAction() {
         return $this->action;
@@ -29,5 +36,11 @@ class trackablemovelog {
         $this->fromuser = $fromuser;
     }
 
-
+    public function actionMessage() {
+        switch ($this->action) {
+            case "create":
+                return "Created";
+        }
+    }
+    
 }

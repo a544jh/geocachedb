@@ -1,5 +1,5 @@
 <?php
-
+require_once 'libs/models/trackablelog.php';
 class Logentry {
 
     private $id;
@@ -9,8 +9,7 @@ class Logentry {
     private $edited;
     private $geocacheid;
     private $visittype;
-    private $trackableVisitLogs; //arrays of logs
-    private $trackableMoveLogs;
+    private $trackableLogs; //arrays of logs
     static $visitMessages = array('found' => "Found it!", 'dnf' => "Didn't find it.",
         'comment' => "Left a comment.");
 
@@ -42,12 +41,8 @@ class Logentry {
         return $this->visittype;
     }
 
-    public function getTrackableVisitLogs() {
-        return $this->trackableVisitLogs;
-    }
-
-    public function getTrackableMoveLogs() {
-        return $this->trackableMoveLogs;
+    public function getTrackableLogs() {
+        return $this->trackableLogs;
     }
 
     public function setId($id) {
@@ -104,6 +99,18 @@ class Logentry {
         $this->edited = $result->edited;
         $this->geocacheid = $result->geocacheid;
         $this->visittype = $result->visittype;
+        $this->attachTrackableLogs();
+    }
+    
+    function attachTrackableLogs() {
+        $sql = "SELECT * FROM trackablelog "
+                . "WHERE logentry = ? ;";
+        $query = getDbConnection()->prepare($sql);
+        $query->execute(array($this->getId()));
+        
+        foreach ($query->fetchAll(PDO::FETCH_OBJ) as $trackablelog) {
+        $this->trackableLogs[] = new Trackablelog($trackablelog->action, $trackablelog->trackable, $trackablelog->fromuser);
+        }
     }
 
     public static function getLogsForCache($geocache) {
@@ -112,6 +119,24 @@ class Logentry {
                 . "ORDER BY timestamp desc";
         $query = getDbConnection()->prepare($sql);
         $query->execute(array($geocache->getId()));
+
+        $results = array();
+        foreach ($query->fetchAll(PDO::FETCH_OBJ) as $result) {
+            $logentry = new Logentry();
+            $logentry->setAllFields($result);
+            $results[] = $logentry;
+        }
+        return $results;
+    }
+    
+    public static function getLogsForTrackable ($trackable) {
+        $sql = "SELECT * FROM logentry "
+                . "INNER JOIN ( "
+                . "SELECT * FROM trackablelog "
+                . "WHERE trackable = ? ) tl "
+                . "ON tl.logentry = logentry.id;";
+        $query = getDbConnection()->prepare($sql);
+        $query->execute(array($trackable->getId()));
 
         $results = array();
         foreach ($query->fetchAll(PDO::FETCH_OBJ) as $result) {
