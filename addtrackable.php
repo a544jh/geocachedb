@@ -29,7 +29,8 @@ if ($newTrackable->isValid()) {
     $logentry = new Logentry;
     $logentry->setUser($_SESSION['user']);
     $logentry->insertIntoDb();
-    $newTrackable->insertTrackableLog('create', $logentry, null);
+    $trackablelog = new Trackablelog('create', $newTrackable->getId(), null);
+    $trackablelog->insertIntoDb($logentry);
     header('Location: trackablelist.php');
 } else {
     $errors = $newTrackable->errors;

@@ -12,6 +12,7 @@ class Logentry {
     private $trackableLogs; //arrays of logs
     static $visitMessages = array('found' => "Found it!", 'dnf' => "Didn't find it.",
         'comment' => "Left a comment.");
+    public $errors = array();
 
     public function getId() {
         return $this->id;
@@ -108,8 +109,8 @@ class Logentry {
         $query = getDbConnection()->prepare($sql);
         $query->execute(array($this->getId()));
         
-        foreach ($query->fetchAll(PDO::FETCH_OBJ) as $trackablelog) {
-        $this->trackableLogs[] = new Trackablelog($trackablelog->action, $trackablelog->trackable, $trackablelog->fromuser);
+        foreach ($query->fetchAll(PDO::FETCH_OBJ) as $result) {
+        $this->trackableLogs[] = new Trackablelog($result->action, $result->trackable, $result->fromuser);
         }
     }
 
@@ -134,7 +135,8 @@ class Logentry {
                 . "INNER JOIN ( "
                 . "SELECT * FROM trackablelog "
                 . "WHERE trackable = ? ) tl "
-                . "ON tl.logentry = logentry.id;";
+                . "ON tl.logentry = logentry.id "
+                . "ORDER BY timestamp desc;";
         $query = getDbConnection()->prepare($sql);
         $query->execute(array($trackable->getId()));
 

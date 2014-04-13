@@ -1,11 +1,17 @@
-<?php $trackable = $data->trackable; ?>
+<?php
+$trackable = $data->trackable;
+require_once 'libs/models/geocache.php';
+?>
 <div class="panel panel-geocachedb">
     <div class ="row">
         <div class="col-md-2">
             <div class="panel panel-geocachedb">
                 Created <?php echo $trackable->getDateadded(); ?><br>
-                <?php $location = $trackable->getLocation(); if($location instanceof Geocache): ?>In geocahe <a href="geocacheview.php?id=<?php echo $location->getId() ?>"><?php echo $location->getName() ?></a>
-                <?php elseif($location instanceof User) : ?>At user <a href="userprofile.php?id=<?php echo $location->getId() ?>"><?php echo $location->getUsername() ?></a><br>
+                <?php
+                $location = $trackable->getLocation();
+                if ($location instanceof Geocache):
+                    ?>In geocahe <a href="geocacheview.php?id=<?php echo $location->getId() ?>"><?php echo $location->getName() ?></a>
+                <?php elseif ($location instanceof User) : ?>At user <a href="userprofile.php?id=<?php echo $location->getId() ?>"><?php echo $location->getUsername() ?></a><br>
                 <?php endif; ?>
                 <?php if ($trackable->userIsOwner()): ?>
                     Tracking code <?php echo $trackable->getTrackingcode() ?>

@@ -151,24 +151,20 @@ class Trackable {
         return loggedIn() && $_SESSION['user']->getId() === $this->getOwner();
     }
 
-    public function insertTrackableLog($action, $logentry, $fromuser) {
-        $sql = "INSERT INTO trackablelog "
-                . "VALUES(?, ?, ?, ?);";
-        $query = getDbConnection()->prepare($sql);
-        $ok = $query->execute(array($logentry->getId(), $action, $this->getId(), $fromuser));
-        return $ok;
-    }
-
     public static function trackablesHeldBy($user) {
-        //the latest GRAB log made by user
+        //the latest GRAB logs for each trackable made by user
         $sql = "SELECT * FROM trackables "
                 . "INNER JOIN("
-                . "SELECT tl.trackable, tl.action, le.userid, max(le.timestamp) "
+                . "SELECT tl.trackable, le.timestamp "
+                . "FROM trackablelog tl, logentry le, "
+                . "(SELECT tl.trackable, max(le.timestamp) "
                 . "FROM trackablelog tl, logentry le "
+                . "WHERE tl.action != 'visit' AND tl.logentry=le.id "
+                . "GROUP BY tl.trackable"
+                . ") max "
                 . "WHERE le.userid = ? AND (tl.action = 'grab' OR tl.action = 'create') "
-                . "AND tl.logentry = le.id "
-                . "GROUP BY tl.trackable, tl.action, le.userid) lg "
-                . "ON trackables.id = lg.trackable;";
+                . "AND tl.logentry = le.id AND le.timestamp = max.max AND tl.trackable = max.trackable"
+                . ") lg ON trackables.id = lg.trackable;";
         $query = getDbConnection()->prepare($sql);
         $query->execute(array($user->getId()));
 
@@ -180,36 +176,51 @@ class Trackable {
         }
         return $results;
     }
-    
-    public function getLocation(){
-        //look for the latest grab log to see if a user is holding the trackable
-        $sql = "SELECT userid FROM logentry "
-                . "INNER JOIN( "
-                . "SELECT tl.logentry, max(le.timestamp) "
+
+    public static function trackablesInCache($geocache) {
+        //the latest DROP logs for each trackable for the geocache
+        $sql = "SELECT * FROM trackables "
+                . "INNER JOIN("
+                . "SELECT tl.trackable, le.timestamp "
+                . "FROM trackablelog tl, logentry le, "
+                . "(SELECT tl.trackable, max(le.timestamp) "
                 . "FROM trackablelog tl, logentry le "
-                . "WHERE tl.trackable = ? AND (tl.action = 'grab' OR tl.action = 'create') "
-                . "AND tl.logentry = le.id "
-                . "GROUP BY tl.logentry "
-                . ") lg ON logentry.id = lg.logentry;";
-        $userQuery = getDbConnection()->prepare($sql);
-        $userQuery->execute(array($this->getId()));
-        $userResult = $userQuery->fetchObject();
-        if ($userResult != null) {
-            return User::getUserById($userResult->userid);
+                . "WHERE tl.action != 'visit' AND tl.logentry=le.id "
+                . "GROUP BY tl.trackable"
+                . ") max "
+                . "WHERE le.geocacheid = ? AND tl.action = 'drop' "
+                . "AND tl.logentry = le.id AND le.timestamp = max.max AND tl.trackable = max.trackable"
+                . ") lg ON trackables.id = lg.trackable;";
+        $query = getDbConnection()->prepare($sql);
+        $query->execute(array($geocache->getId()));
+
+        $results = array();
+        foreach ($query->fetchAll(PDO::FETCH_OBJ) as $result) {
+            $trackable = new Trackable();
+            $trackable->setAllFields($result);
+            $results[] = $trackable;
         }
-        //otherwise look for the latest drop log to see if it's in a geocache
-        $sql = "SELECT geocacheid FROM logentry "
-                . "INNER JOIN( "
-                . "SELECT tl.logentry, max(le.timestamp) "
-                . "FROM trackablelog tl, logentry le "
-                . "WHERE tl.trackable = ? AND tl.action = 'drop' "
-                . "AND tl.logentry = le.id "
-                . "GROUP BY tl.logentry "
-                . ") lg ON logentry.id = lg.logentry;";
-        $gcQuery = getDbConnection()->prepare($sql);
-        $gcQuery->execute(array($this->getId()));
-        $gcResult = $gcQuery->fetchObject();
-        return Geocache::getGeocacheById($gcResult->geocacheid);
+        return $results;
+    }
+
+    public function getLocation() {
+        //look for the latest trackablelog that changed the trackable's location
+        $sql = "SELECT tl.logentry, tl.action, le.userid, le.geocacheid
+FROM trackablelog tl, logentry le
+WHERE tl.trackable = ? AND (tl.action = 'grab' OR tl.action = 'create' OR tl.action = 'drop')
+AND tl.logentry = le.id
+ORDER BY le.timestamp desc LIMIT 1;
+";
+        $logQuery = getDbConnection()->prepare($sql);
+        $logQuery->execute(array($this->getId()));
+        $logResult = $logQuery->fetchObject();
+        //if it's a grab or create log, a user has the trackable
+        if ($logResult->action == 'grab' OR $logResult->action == 'create') {
+            return User::getUserById($logResult->userid);
+            //otherwise it's in a geocache
+        } else if ($logResult->action == 'drop') {
+            return Geocache::getGeocacheById($logResult->geocacheid);
+        }
     }
 
 }

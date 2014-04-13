@@ -113,4 +113,19 @@ class User{
         }
         return $results; 
     }
+    
+    public function visittypeCount($type) {
+        $sql = "SELECT count(*) count "
+                . "FROM logentry "
+                . "WHERE userid = ? AND visittype = ?;";
+        $query = getDbConnection()->prepare($sql);
+        $query->execute(array($this->getId(), $type));
+
+        $result = $query->fetchObject();
+        if ($result == null) {
+            return 0;
+        } else {
+            return $result->count;
+        }
+    }
 }

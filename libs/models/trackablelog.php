@@ -2,12 +2,12 @@
 
 class Trackablelog {
     private $action;
-    private $trackable;
+    private $trackableid;
     private $fromuser;
     
-    function __construct($action, $trackable, $fromuser) {
+    function __construct($action, $trackableid, $fromuser) {
         $this->action = $action;
-        $this->trackable = $trackable;
+        $this->trackableid = $trackableid;
         $this->fromuser = $fromuser;
     }
 
@@ -16,8 +16,8 @@ class Trackablelog {
         return $this->action;
     }
 
-    public function getTrackable() {
-        return $this->trackable;
+    public function getTrackableid() {
+        return $this->trackableid;
     }
 
     public function getFromuser() {
@@ -28,19 +28,20 @@ class Trackablelog {
         $this->action = $action;
     }
 
-    public function setTrackable($trackable) {
-        $this->trackable = $trackable;
+    public function setTrackableid($trackableid) {
+        $this->trackableid = $trackableid;
     }
 
     public function setFromuser($fromuser) {
         $this->fromuser = $fromuser;
     }
 
-    public function actionMessage() {
-        switch ($this->action) {
-            case "create":
-                return "Created";
-        }
+    public function insertIntoDb($logentry) {
+        $sql = "INSERT INTO trackablelog "
+                . "VALUES(?, ?, ?, ?);";
+        $query = getDbConnection()->prepare($sql);
+        $ok = $query->execute(array($logentry->getId(), $this->getAction(), $this->getTrackableid(), $this->getFromuser()));
+        return $ok;
     }
     
 }
