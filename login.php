@@ -25,6 +25,7 @@ $password = $_POST["password"];
 
 $user = User::getUserByName($username);
 
+//check the password
 if ($user != null &&
         crypt($password, $user->getPassword()) === $user->getPassword()) {
     $_SESSION['user'] = $user;

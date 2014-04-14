@@ -17,11 +17,11 @@ if (isset($_GET['id'])) {
 $geocache = Geocache::getGeocacheById($id);
 
 $newLogentry = new Logentry();
-
+//show the form
 if (empty($_POST)) {
     showView('logcache.php', array('logentry' => $newLogentry, 'geocache' => $geocache));
 }
-
+//if there is data in POST, set the fields in the object
 $newLogentry->setUser($_SESSION['user']);
 $newLogentry->setGeocacheid($geocache->getId());
 $newLogentry->setVisittype($_POST['visittype']);

@@ -114,6 +114,7 @@ class User{
         return $results; 
     }
     
+    //returns the number of logs the user has made of a certain type, e.g. 'found'
     public function visittypeCount($type) {
         $sql = "SELECT count(*) count "
                 . "FROM logentry "

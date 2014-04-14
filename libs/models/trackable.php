@@ -77,7 +77,8 @@ class Trackable {
         $this->owner = $result->ownerid;
         $this->trackingcode = $result->trackingcode;
     }
-
+    
+    //generates a random tracking code
     public static function generateTrackingcode() {
         $chars = array_merge(range(0, 9), range('A', 'Z'));
         $code = '';
@@ -205,12 +206,12 @@ class Trackable {
 
     public function getLocation() {
         //look for the latest trackablelog that changed the trackable's location
-        $sql = "SELECT tl.logentry, tl.action, le.userid, le.geocacheid
-FROM trackablelog tl, logentry le
-WHERE tl.trackable = ? AND (tl.action = 'grab' OR tl.action = 'create' OR tl.action = 'drop')
-AND tl.logentry = le.id
-ORDER BY le.timestamp desc LIMIT 1;
-";
+        $sql = "SELECT tl.logentry, tl.action, le.userid, le.geocacheid "
+                . "FROM trackablelog tl, logentry le "
+                . "WHERE tl.trackable = ? "
+                . "AND (tl.action = 'grab' OR tl.action = 'create' OR tl.action = 'drop') "
+                . "AND tl.logentry = le.id "
+                . "ORDER BY le.timestamp desc LIMIT 1;";
         $logQuery = getDbConnection()->prepare($sql);
         $logQuery->execute(array($this->getId()));
         $logResult = $logQuery->fetchObject();

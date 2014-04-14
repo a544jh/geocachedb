@@ -36,6 +36,7 @@ class Trackablelog {
         $this->fromuser = $fromuser;
     }
 
+    //inserts the log into the db and attaches it to specified logentry
     public function insertIntoDb($logentry) {
         $sql = "INSERT INTO trackablelog "
                 . "VALUES(?, ?, ?, ?);";

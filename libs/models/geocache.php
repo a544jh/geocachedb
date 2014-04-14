@@ -288,10 +288,12 @@ class Geocache {
         return empty($this->errors);
     }
 
+    //returns true if the logged in user is the owner of the geocache
     public function userIsOwner() {
         return loggedIn() && $_SESSION['user']->getId() === $this->getOwner();
     }
 
+    //returns the number of logs for the cahce of a certain type, e.g. 'found'
     public function visittypeCount($type) {
         $sql = "SELECT count(*) count "
                 . "FROM logentry "
