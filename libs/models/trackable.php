@@ -1,5 +1,5 @@
 <?php
-
+require_once 'libs/models/geocache.php';
 class Trackable {
 
     private $id;
@@ -160,7 +160,7 @@ class Trackable {
                 . "FROM trackablelog tl, logentry le, "
                 . "(SELECT tl.trackable, max(le.timestamp) "
                 . "FROM trackablelog tl, logentry le "
-                . "WHERE tl.action != 'visit' AND tl.logentry=le.id "
+                . "WHERE tl.action NOT IN ('visit', 'comment') AND tl.logentry=le.id "
                 . "GROUP BY tl.trackable"
                 . ") max "
                 . "WHERE le.userid = ? AND (tl.action = 'grab' OR tl.action = 'create') "
@@ -186,7 +186,7 @@ class Trackable {
                 . "FROM trackablelog tl, logentry le, "
                 . "(SELECT tl.trackable, max(le.timestamp) "
                 . "FROM trackablelog tl, logentry le "
-                . "WHERE tl.action != 'visit' AND tl.logentry=le.id "
+                . "WHERE tl.action NOT IN ('visit', 'comment') AND tl.logentry=le.id "
                 . "GROUP BY tl.trackable"
                 . ") max "
                 . "WHERE le.geocacheid = ? AND tl.action = 'drop' "

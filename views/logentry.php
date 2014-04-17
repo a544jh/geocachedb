@@ -11,13 +11,23 @@
             </div>
         </div>
         <div class="col-md-10">
-            <div class="panel panel-geocachedb">
-                <?php echo Logentry::$visitMessages[$logentry->getVisittype()]; ?>
-            </div>
-            <div class="panel panel-geocachedb">
-                <?php echo htmlspecialchars($logentry->getComment()); ?>
-            </div>
             <?php
+            $visitMessage = Logentry::$visitMessages[$logentry->getVisittype()];
+            if ($visitMessage != null):
+                ?>
+                <div class="panel panel-geocachedb">
+                    <?php echo $visitMessage; ?>
+                </div>
+                <?php
+            endif;
+            $comment = htmlspecialchars($logentry->getComment());
+            if (isset($comment)):
+                ?>
+                <div class="panel panel-geocachedb">
+                    <?php echo $comment; ?>
+                </div>
+                <?php
+            endif;
             $trackablelogs = $logentry->getTrackableLogs();
             if (!empty($trackablelogs)):
                 foreach ($trackablelogs as $trackablelog):
@@ -50,6 +60,11 @@
                                 ?>
                                 <a href="trackableview.php?id=<?php echo $trackablelog->getTrackableid() ?>"><?php echo Trackable::getTrackableById($trackablelog->getTrackableid())->getName() ?></a>
                                 visited <a href="geocacheview.php?id=<?php echo $logentry->getGeocacheid() ?>"><?php echo Geocache::getGeocacheById($logentry->getGeocacheid())->getName() ?></a>
+                                <?php
+                                break;
+                            case 'comment':
+                                ?>
+                                Left a comment on <a href="trackableview.php?id=<?php echo $trackablelog->getTrackableid() ?>"><?php echo Trackable::getTrackableById($trackablelog->getTrackableid())->getName() ?></a>
                                 <?php
                                 break;
                         endswitch;
