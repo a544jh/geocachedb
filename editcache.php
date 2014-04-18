@@ -12,7 +12,7 @@ $geocache = Geocache::getGeocacheById($id);
 
 if (!$geocache->userIsOwner()) {  
         $_SESSION['error'] = "You are not the owner of this geocache.";
-        header("Location: geocacheview.php?id=".$geocache->getId());
+        header("Location: geocacheview.php?id=$id");
         exit();
     }
 

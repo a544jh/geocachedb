@@ -19,7 +19,7 @@ require_once 'libs/models/geocache.php';
             </div>
             <a href="logtrackable.php?id=<?php echo $trackable->getId() ?>" role="button" class="btn btn-default btn-block">Grab it / comment 
                 <span class="glyphicon glyphicon-comment"></span></a>
-            <a href="trackableform.php" role="button" class="btn btn-default btn-block">Edit 
+            <a href="edittrackable.php?id=<?php echo $trackable->getId() ?>" role="button" class="btn btn-default btn-block">Edit 
                 <span class="glyphicon glyphicon-edit"></span></a>
         </div>
         <div class="col-md-10">

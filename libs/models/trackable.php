@@ -143,6 +143,13 @@ class Trackable {
         }
         return $ok;
     }
+    
+    public function updateInDb() {
+        $sql = "UPDATE trackables SET name = ?, description = ? "
+                . "WHERE id = ?";
+        $query = getDbConnection()->prepare($sql);
+        return $query->execute(array($this->getName(), $this->getDescription(), $this->getId()));
+    }
 
     public function isValid() {
         return empty($this->errors);

@@ -50,7 +50,7 @@
                     </div>
                     <div class="panel panel-geocachedb">
                         <h4>Description</h4>
-                        <textarea class="form-control" id="description" name="description"><?php echo $geocache->getDescription(); ?></textarea>
+                        <textarea class="form-control" id="description" name="description"><?php echo htmlspecialchars($geocache->getDescription()); ?></textarea>
                     </div>
                     <div class="panel panel-geocachedb">
                         <h4>Hint</h4>

@@ -91,6 +91,10 @@ class Logentry {
     public function isValid() {
         return empty($this->errors);
     }
+    
+    public function userIsOwner() {
+        return loggedIn() && $_SESSION['user']->getId() === $this->getUser();
+    }
 
     function setAllFields($result) {
         $this->id = $result->id;
@@ -111,6 +115,21 @@ class Logentry {
         
         foreach ($query->fetchAll(PDO::FETCH_OBJ) as $result) {
         $this->trackableLogs[] = new Trackablelog($result->action, $result->trackable, $result->fromuser);
+        }
+    }
+    
+    public static function getLogentryById($id){
+        $sql = "SELECT * FROM logentry WHERE id = ?";
+        $query = getDbConnection()->prepare($sql);
+        $query->execute(array($id));
+
+        $result = $query->fetchObject();
+        if ($result == null) {
+            return null;
+        } else {
+            $logentry = new Logentry();
+            $logentry->setAllFields($result);
+            return $logentry;
         }
     }
 
@@ -159,6 +178,22 @@ class Logentry {
             $this->setId($query->fetchColumn());
         }
         return $ok;
+    }
+    
+    public function updateInDb() {
+        $sql = "UPDATE logentry SET comment = ?, edited = current_timestamp "
+                . "WHERE id = ?";
+        $query = getDbConnection()->prepare($sql);
+        return $query->execute(array($this->getComment(), $this->getId()));
+    }
+    
+    public function delete() {
+        $sql = "DELETE from trackablelog WHERE logentry = ?;";
+        $sql1 = "DELETE from logentry WHERE id = ?;";
+        $query = getDbConnection()->prepare($sql);
+        $query1 = getDbConnection()->prepare($sql1);
+        $query->execute(array($this->getId()));
+        return $query1->execute(array($this->getId()));
     }
 
 }

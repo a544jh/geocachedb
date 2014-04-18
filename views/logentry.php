@@ -2,9 +2,23 @@
 <div class="panel panel-geocachedb">
     <div class="row">
         <div class="col-md-2">
-            <?php echo $logentry->getTimestamp() ?>
+            <?php echo date('Y-m-d H:i', strtotime($logentry->getTimestamp())) ?>
+            <?php
+            $edited = $logentry->getEdited();
+            if (isset($edited)):
+                ?><br>Edited <?php
+                echo date('Y-m-d H:i', strtotime($edited));
+            endif;
+            ?>
             <br>
-<!--            <button type="button" class="btn btn-default btn-xs">Delete <span class="glyphicon glyphicon-remove"></span></button>-->
+            <?php if ($logentry->userIsOwner()): ?>
+                <a class="btn btn-default btn-xs" href="editlog.php?id=<?php echo $logentry->getId() ?>">Edit <span class="glyphicon glyphicon-edit"></span></a>
+                <?php
+            endif;
+            if ($logentry->userIsOwner()):
+                ?>
+                <a class="btn btn-default btn-xs" href="deletelog.php?id=<?php echo $logentry->getId()?>">Delete <span class="glyphicon glyphicon-remove"></span></a>
+            <?php endif; ?>
             <div class="panel panel-geocachedb">
                 <a href="userprofile.php"><?php echo $user->getUsername(); ?></a><br>
                 <?php echo $user->visittypeCount('found') ?> Found

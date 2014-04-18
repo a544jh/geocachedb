@@ -9,7 +9,7 @@
             </div>
             <div class="col-md-10">
                 <div class="panel panel-geocachedb">
-                    <h3><h3><input type="text" class="form-control" id="trackableNameField" placeholder="Trackable name" name="name"></h3></h3><br>
+                    <h3><h3><input type="text" class="form-control" id="trackableNameField" placeholder="Trackable name" name="name" value="<?php echo $trackable->getName() ?>"></h3></h3><br>
                     by <a href="userprofile.php"><?php echo $_SESSION['user']->getUsername(); ?></a>
                 </div>
                 <div class="panel panel-geocachedb">
@@ -17,7 +17,7 @@
                 </div>
                 <div class="panel panel-geocachedb">
                     <h4>Description</h4>
-                    <textarea class="form-control" id="description" name="description"></textarea>
+                    <textarea class="form-control" id="description" name="description"><?php echo htmlspecialchars($trackable->getDescription()) ?></textarea>
                 </div>
             </div>
         </div>
