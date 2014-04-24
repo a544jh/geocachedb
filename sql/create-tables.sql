@@ -2,9 +2,9 @@ CREATE TABLE users
 (
 id SERIAL PRIMARY KEY,
 name varchar(50) UNIQUE NOT NULL,
-password varchar(50),
-registred date,
-role integer,
+password varchar(50) NOT NULL,
+registered date DEFAULT current_date,
+role integer NOT NULL,
 bio varchar(5000)
 );
 

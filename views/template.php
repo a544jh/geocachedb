@@ -32,6 +32,7 @@
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <?php if (!loggedIn()): ?>
+                        <li><a href="register.php">Register</a></li>
                         <li><a href="login.php">Login</a></li>
                         <?php else: ?>
                         <li><a href="profile.php"><?php echo $_SESSION['user']->getUsername(); ?></a></li>

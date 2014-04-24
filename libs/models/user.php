@@ -1,37 +1,48 @@
 <?php
+
 require_once 'libs/dbconnection.php';
 
-class User{
+class User {
+
     private $id;
     private $username;
     private $password;
-    private $registred;
+    private $registered;
     private $role;
     private $bio;
-    
-    function __construct($id, $username, $password, $registred, $role, $bio) {
-        $this->id = $id;
-        $this->username = $username;
-        $this->password = $password;
-        $this->registred = $registred;
-        $this->role = $role;
-        $this->bio = $bio;
-    }
 
-    
-    public function getUsername(){
+//    function __construct($id, $username, $password, $registred, $role, $bio) {
+//        $this->id = $id;
+//        $this->username = $username;
+//        $this->password = $password;
+//        $this->registred = $registred;
+//        $this->role = $role;
+//        $this->bio = $bio;
+//    }
+
+
+    public function getUsername() {
         return $this->username;
     }
-    
+
     public function setUsername($username) {
         $this->username = $username;
+
+        if (trim($this->username) === '') {
+            $this->errors['username'] = "Username may not be empty.";
+        } else if ($this->username != filter_var($this->username, FILTER_SANITIZE_STRING)) {
+            $this->errors['username'] = "Username contains invalid characters.";
+        } else if (User::getUserByName($this->username) != null) {
+            $this->errors['username'] = "Username is already taken.";
+        } else {
+            unset($this->errors['username']);
+        }
     }
 
-        
     public function getId() {
         return $this->id;
     }
-    
+
     public function setId($id) {
         $this->id = $id;
     }
@@ -40,8 +51,8 @@ class User{
         return $this->password;
     }
 
-    public function getRegistred() {
-        return $this->registred;
+    public function getRegistered() {
+        return $this->registered;
     }
 
     public function getRole() {
@@ -53,11 +64,17 @@ class User{
     }
 
     public function setPassword($password) {
-        $this->password = $password;
+        if (trim($password) === '') {
+            $this->errors['password'] = "Password may not be empty.";
+        } else {
+            unset($this->errors['password']);
+        }
+        //encrypt the password
+        $this->password = crypt($password);
     }
 
-    public function setRegistred($registred) {
-        $this->registred = $registred;
+    public function setRegistered($registred) {
+        $this->registered = $registred;
     }
 
     public function setRole($role) {
@@ -68,34 +85,41 @@ class User{
         $this->bio = $bio;
     }
 
-    public static function getUserByName($username){
+    function setAllFields($result) {
+        $this->id = $result->id;
+        $this->username = $result->name;
+        $this->password = $result->password;
+        $this->registered = $result->registered;
+        $this->role = $result->role;
+        $this->bio = $result->bio;
+    }
+
+    public static function getUserByName($username) {
         $sql = "SELECT * FROM users WHERE name = ? ";
         $query = getDbConnection()->prepare($sql);
         $query->execute(array($username));
-        
+
         $result = $query->fetchObject();
         if ($result == null) {
             return null;
         } else {
-            $user = new User($result->id, $result->name, $result->password,
-                    $result->registred, $result->role, $result->bio);
-            
+            $user = new User();
+            $user->setAllFields($result);
             return $user;
         }
     }
-    
-    public static function getUserById($id){
-         $sql = "SELECT * FROM users WHERE id = ? ";
+
+    public static function getUserById($id) {
+        $sql = "SELECT * FROM users WHERE id = ? ";
         $query = getDbConnection()->prepare($sql);
         $query->execute(array($id));
-        
+
         $result = $query->fetchObject();
         if ($result == null) {
             return null;
         } else {
-            $user = new User($result->id, $result->name, $result->password,
-                    $result->registred, $result->role, $result->bio);
-            
+            $user = new User();
+            $user->setAllFields($result);
             return $user;
         }
     }
@@ -104,16 +128,16 @@ class User{
         $sql = "SELECT * FROM users";
         $query = getDbConnection()->prepare($sql);
         $query->execute();
-        
+
         $results = array();
         foreach ($query->fetchAll(PDO::FETCH_OBJ) as $result) {
-            $user = new User($result->id, $result->name, $result->password,
-                    $result->registred, $result->role, $result->bio);
+            $user = new User();
+            $user->setAllFields($result);
             $results[] = $user;
         }
-        return $results; 
+        return $results;
     }
-    
+
     //returns the number of logs the user has made of a certain type, e.g. 'found'
     public function visittypeCount($type) {
         $sql = "SELECT count(*) count "
@@ -129,4 +153,21 @@ class User{
             return $result->count;
         }
     }
+    
+    public function insertIntoDb() {
+        $sql = "INSERT INTO users(name, password, role, bio) "
+                . "VALUES (?, ?, ?, ?) RETURNING id;";
+        $query = getDbConnection()->prepare($sql);
+        $ok = $query->execute(array($this->getUsername(), $this->getPassword(), $this->getRole(), $this->getBio()));
+        
+        if ($ok) {
+            $this->setId($query->fetchColumn());
+        }
+        return $ok;
+    }
+
+    public function isValid() {
+        return empty($this->errors);
+    }
+
 }
