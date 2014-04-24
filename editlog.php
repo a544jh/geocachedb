@@ -13,16 +13,16 @@ if (!$logentry->userIsOwner()) {
     }
     
 if (empty($_POST)) {
-        showView('editlog.php', array('logentry' => $logentry));
+        showView('editlog.php', array('logentry' => $logentry, 'editlogReferer' => $_SERVER['HTTP_REFERER']));
 }
 
 $logentry->setComment($_POST['comment']);
+$referer = $_POST['referer'];
 
 if ($logentry->isValid()) {
     $logentry->updateInDb();
-    //TODO: direct to refering page
-    header("Location: geocacheview.php?id=".$logentry->getGeocacheid());
+    header("Location: $referer");
 } else {
     $errors = $logentry->errors;
-    showView('editlog.php', array('logentry' => $logentry, 'errors' => $errors));
+    showView('editlog.php', array('logentry' => $logentry, 'editlogRef' => $referer, 'errors' => $errors));
 }

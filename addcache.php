@@ -25,6 +25,7 @@ $newGeocache->setLongitude($_POST['longitude']);
 
 if ($newGeocache->isValid()) {
     $newGeocache->insertIntoDb();
+    $_SESSION['success'] = "Geocache added successfully. It's now waiting to be published by an admin.";
     header('Location: geocachelist.php');
 } else {
     $errors = $newGeocache->errors;
