@@ -167,6 +167,22 @@ class Logentry {
         }
         return $results;
     }
+    
+    public static function getLogsByUser($user) {
+        $sql = "SELECT * FROM logentry "
+                . "WHERE userid = ? "
+                . "ORDER BY timestamp desc;";
+        $query = getDbConnection()->prepare($sql);
+        $query->execute(array($user->getId()));
+
+        $results = array();
+        foreach ($query->fetchAll(PDO::FETCH_OBJ) as $result) {
+            $logentry = new Logentry();
+            $logentry->setAllFields($result);
+            $results[] = $logentry;
+        }
+        return $results;
+    }
 
     public function insertIntoDb() {
         $sql = "INSERT INTO logentry (userid, comment, geocacheid, visittype) "

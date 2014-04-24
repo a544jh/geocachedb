@@ -1,4 +1,7 @@
-<?php $user = User::getUserById($logentry->getUser()) ?>
+<?php
+$user = User::getUserById($logentry->getUser());
+require_once 'libs/models/trackable.php';
+?>
 <div class="panel panel-geocachedb">
     <div class="row">
         <div class="col-md-2">
@@ -17,20 +20,20 @@
             endif;
             if ($logentry->userIsOwner()):
                 ?>
-                <a class="btn btn-default btn-xs" href="deletelog.php?id=<?php echo $logentry->getId()?>">Delete <span class="glyphicon glyphicon-remove"></span></a>
-            <?php endif; ?>
+                <a class="btn btn-default btn-xs" href="deletelog.php?id=<?php echo $logentry->getId() ?>">Delete <span class="glyphicon glyphicon-remove"></span></a>
+<?php endif; ?>
             <div class="panel panel-geocachedb">
-                <a href="userprofile.php"><?php echo $user->getUsername(); ?></a><br>
-                <?php echo $user->visittypeCount('found') ?> Found
+                <a href="userprofile.php?id=<?php echo $user->getId() ?>"><?php echo $user->getUsername(); ?></a><br>
+<?php echo $user->visittypeCount('found') ?> Found
             </div>
         </div>
         <div class="col-md-10">
             <?php
-            $visitMessage = Logentry::$visitMessages[$logentry->getVisittype()];
-            if ($visitMessage != null):
+            if ($logentry->getVisittype() != null):
+                $visitMessage = Logentry::$visitMessages[$logentry->getVisittype()];
                 ?>
                 <div class="panel panel-geocachedb">
-                    <?php echo $visitMessage; ?>
+                <?php echo $visitMessage; ?>
                 </div>
                 <?php
             endif;
@@ -38,7 +41,7 @@
             if (isset($comment)):
                 ?>
                 <div class="panel panel-geocachedb">
-                    <?php echo $comment; ?>
+                <?php echo $comment; ?>
                 </div>
                 <?php
             endif;

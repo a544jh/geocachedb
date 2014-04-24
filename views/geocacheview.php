@@ -37,7 +37,7 @@ require_once 'libs/models/trackablelog.php';
         <div class="col-md-10">
             <div class="panel panel-geocachedb">
                 <h3><?php echo $geocache->getName(); ?></h3><br>
-                by <a href="userprofile.php"><?php echo User::getUserById($geocache->getOwner())->getUsername(); ?></a>
+                by <a href="userprofile.php?id=<?php echo $geocache->getOwner() ?>"><?php echo User::getUserById($geocache->getOwner())->getUsername(); ?></a>
             </div>
 
 

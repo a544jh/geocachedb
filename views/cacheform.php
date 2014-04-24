@@ -23,7 +23,7 @@
                         <div class="form-group">
                             <div class="panel panel-geocachedb">
                                 <h3><input type="text" class="form-control" id="cacheNameField" placeholder="Cache name" name="name" value="<?php echo $geocache->getName(); ?>"></h3><br>
-                                by <a href="userprofile.php"><?php echo $_SESSION['user']->getUsername(); ?></a>
+                                by <a href="userprofile.php?id=<?php echo $_SESSION['user']->getId() ?>"><?php echo $_SESSION['user']->getUsername(); ?></a>
                             </div>
                         </div>
                     </div>
