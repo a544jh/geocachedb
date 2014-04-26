@@ -1,4 +1,5 @@
 <?php
+//TODO: make a getLink() method...
 $user = User::getUserById($logentry->getUser());
 require_once 'libs/models/trackable.php';
 ?>
@@ -21,19 +22,20 @@ require_once 'libs/models/trackable.php';
             if ($logentry->userIsOwner()):
                 ?>
                 <a class="btn btn-default btn-xs" href="deletelog.php?id=<?php echo $logentry->getId() ?>">Delete <span class="glyphicon glyphicon-remove"></span></a>
-<?php endif; ?>
+            <?php endif; ?>
             <div class="panel panel-geocachedb">
                 <a href="userprofile.php?id=<?php echo $user->getId() ?>"><?php echo $user->getUsername(); ?></a><br>
-<?php echo $user->visittypeCount('found') ?> Found
+                <?php echo $user->visittypeCount('found') ?> Found
             </div>
         </div>
         <div class="col-md-10">
             <?php
             if ($logentry->getVisittype() != null):
+                $visittype = $logentry->getVisittype();
                 $visitMessage = Logentry::$visitMessages[$logentry->getVisittype()];
                 ?>
                 <div class="panel panel-geocachedb">
-                <?php echo $visitMessage; ?>
+                    <?php echo $visitMessage ?> <a href="geocacheview.php?id=<?php echo $logentry->getGeocacheid() ?>"><?php echo Geocache::getGeocacheById($logentry->getGeocacheid())->getName() ?></a>
                 </div>
                 <?php
             endif;
@@ -41,7 +43,7 @@ require_once 'libs/models/trackable.php';
             if (isset($comment)):
                 ?>
                 <div class="panel panel-geocachedb">
-                <?php echo $comment; ?>
+                    <?php echo $comment; ?>
                 </div>
                 <?php
             endif;
@@ -53,8 +55,9 @@ require_once 'libs/models/trackable.php';
                         <?php
                         switch ($trackablelog->getAction()):
                             case 'create':
-                                echo "Created "
-                                ?><a href="trackableview.php?id=<?php echo $trackablelog->getTrackableid() ?>"><?php echo Trackable::getTrackableById($trackablelog->getTrackableid())->getName() ?></a>
+                                ?>
+                                Created
+                                <a href="trackableview.php?id=<?php echo $trackablelog->getTrackableid() ?>"><?php echo Trackable::getTrackableById($trackablelog->getTrackableid())->getName() ?></a>
                                 <?php
                                 break;
                             case 'grab':

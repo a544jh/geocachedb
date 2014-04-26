@@ -10,8 +10,8 @@ class Logentry {
     private $geocacheid;
     private $visittype;
     private $trackableLogs; //arrays of logs
-    static $visitMessages = array('found' => "Found it!", 'dnf' => "Didn't find it.",
-        'comment' => "Left a comment.");
+    static $visitMessages = array('found' => "Found", 'dnf' => "Didn't find",
+        'comment' => "Left a comment on");
     public $errors = array();
 
     public function getId() {

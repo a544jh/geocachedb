@@ -140,10 +140,11 @@ class User {
 
     //returns the number of geocaches the user has made a log on of a certain type, e.g. 'found'
     public function visittypeCount($type) {
-        $sql = "SELECT geocacheid, count(*) count "
+        $sql = "SELECT count(*) FROM ("
+                . "SELECT DISTINCT geocacheid "
                 . "FROM logentry "
                 . "WHERE userid = ? AND visittype = ? "
-                . "GROUP BY geocacheid;";
+                . ") a;";
         $query = getDbConnection()->prepare($sql);
         $query->execute(array($this->getId(), $type));
 

@@ -227,6 +227,40 @@ class Geocache {
         }
         return $results;
     }
+    
+    public static function getCachesOwnedBy($userid) {
+        $sql = "SELECT * FROM geocaches WHERE ownerid = ?";
+        $query = getDbConnection()->prepare($sql);
+        $query->execute(array($userid));
+
+        $results = array();
+        foreach ($query->fetchAll(PDO::FETCH_OBJ) as $result) {
+            $geocache = new Geocache();
+            $geocache->setAllFields($result);
+            $results[] = $geocache;
+        }
+        return $results;
+    }
+    
+    public static function getCachesFoundBy($userid) {
+        $sql = "SELECT * FROM geocaches "
+                . "WHERE EXISTS ("
+                . "SELECT 1 FROM logentry "
+                . "WHERE geocacheid = geocaches.id "
+                . "AND visittype = 'found' "
+                . "AND userid = ? "
+                . ") ;";
+        $query = getDbConnection()->prepare($sql);
+        $query->execute(array($userid));
+
+        $results = array();
+        foreach ($query->fetchAll(PDO::FETCH_OBJ) as $result) {
+            $geocache = new Geocache();
+            $geocache->setAllFields($result);
+            $results[] = $geocache;
+        }
+        return $results;
+    }
 
     public static function getGeocacheById($id) {
         $sql = "SELECT * FROM geocaches WHERE id = ?";
@@ -293,11 +327,13 @@ class Geocache {
         return loggedIn() && $_SESSION['user']->getId() === $this->getOwner();
     }
 
-    //returns the number of logs for the cahce of a certain type, e.g. 'found'
+    //returns the number of users who made a log for the cache of a certain type, e.g. 'found'
     public function visittypeCount($type) {
-        $sql = "SELECT count(*) count "
+        $sql = "SELECT count(*) FROM ("
+                . "SELECT DISTINCT userid "
                 . "FROM logentry "
-                . "WHERE geocacheid = ? AND visittype = ?;";
+                . "WHERE geocacheid = ? AND visittype = ? "
+                . ") a;";
         $query = getDbConnection()->prepare($sql);
         $query->execute(array($this->getId(), $type));
 

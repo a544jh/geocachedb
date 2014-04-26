@@ -4,8 +4,8 @@
         <div class="col-md-2">
             <div class="panel panel-geocachedb">
                 <ul class="nav">
-                    <li><a href="#">Hidden caches</a></li>
-                    <li><a href="#">Found caches</a></li>
+                    <li><a href="geocachelist.php?search=owner&user=<?php echo $user->getId() ?>">Hidden caches</a></li>
+                    <li><a href="geocachelist.php?search=foundby&user=<?php echo $user->getId() ?>">Found caches</a></li>
                     <li><a href="#">Owned trackables</a></li>
                     <li><a href="#">Discovered trackables</a></li>
                 </ul>

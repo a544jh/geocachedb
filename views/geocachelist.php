@@ -1,3 +1,4 @@
+<?php if (!isset($data->showForm) || $data->showForm === true): ?>
 <form class="form-inline" role="form" action="geocachelist.php" method="get">
     <input type="hidden" name="search" value="name">
             <div class="form-group">
@@ -17,6 +18,8 @@
         <button class="btn btn-sm" type="submit">Search</button>
     </div>
 </form>
+<?php endif; ?>
+<h4><?php echo $data->geocachelistHeader ?></h4>
         <?php if(empty($data->geocachelist)): ?>
         No geocaches found.
         <?php else: ?>

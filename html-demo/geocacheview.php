@@ -35,7 +35,7 @@
                 </div>
                 <div class="col-md-10">
                     <div class="panel panel-geocachedb">
-                        <h3>Geocahe name</h3><br>
+                        <h3>Geocahe name</h3>
                         by <a href="userprofile.php">someuser</a>
                     </div>
 
