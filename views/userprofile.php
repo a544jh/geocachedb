@@ -11,8 +11,8 @@
                 </ul>
             </div>
             <?php if (isset($_SESSION['user']) && $user->getId() == $_SESSION['user']->getId()): ?>
-                <a class="btn btn-default" href="#">Change password</a>
-                <a class="btn btn-default" href="#">Edit bio</a>
+            <a class="btn btn-default btn-block" href="changepassword.php">Change password</a>
+            <a class="btn btn-default btn-block" href="editbio.php">Edit bio</a>
             <?php endif; ?>
         </div>
         <div class="col-md-10">

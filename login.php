@@ -27,7 +27,7 @@ $user = User::getUserByName($username);
 
 //check the password
 if ($user != null &&
-        crypt($password, $user->getPassword()) === $user->getPassword()) {
+        $user->checkPassword($password)) {
     $_SESSION['user'] = $user;
     $_SESSION['success'] = "Login successful!";
     header('Location: index.php');

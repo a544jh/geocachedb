@@ -138,11 +138,12 @@ class User {
         return $results;
     }
 
-    //returns the number of logs the user has made of a certain type, e.g. 'found'
+    //returns the number of geocaches the user has made a log on of a certain type, e.g. 'found'
     public function visittypeCount($type) {
-        $sql = "SELECT count(*) count "
+        $sql = "SELECT geocacheid, count(*) count "
                 . "FROM logentry "
-                . "WHERE userid = ? AND visittype = ?;";
+                . "WHERE userid = ? AND visittype = ? "
+                . "GROUP BY geocacheid;";
         $query = getDbConnection()->prepare($sql);
         $query->execute(array($this->getId(), $type));
 
@@ -153,21 +154,33 @@ class User {
             return $result->count;
         }
     }
-    
+
     public function insertIntoDb() {
         $sql = "INSERT INTO users(name, password, role, bio) "
                 . "VALUES (?, ?, ?, ?) RETURNING id;";
         $query = getDbConnection()->prepare($sql);
         $ok = $query->execute(array($this->getUsername(), $this->getPassword(), $this->getRole(), $this->getBio()));
-        
+
         if ($ok) {
             $this->setId($query->fetchColumn());
         }
         return $ok;
     }
 
+    public function updateInDb() {
+        $sql = "UPDATE users SET name = ?, password = ?, role = ?, bio = ? "
+                . "WHERE id = ?;";
+        $query = getDbConnection()->prepare($sql);
+        return $query->execute(array($this->getUsername(), $this->getPassword(),
+                    $this->getRole(), $this->getBio(), $this->getId()));
+    }
+
     public function isValid() {
         return empty($this->errors);
+    }
+
+    public function checkPassword($password) {
+        return crypt($password, $this->getPassword()) === $this->getPassword();
     }
 
 }
