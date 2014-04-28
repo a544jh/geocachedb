@@ -6,8 +6,7 @@
                 <ul class="nav">
                     <li><a href="geocachelist.php?search=owner&user=<?php echo $user->getId() ?>">Hidden caches</a></li>
                     <li><a href="geocachelist.php?search=foundby&user=<?php echo $user->getId() ?>">Found caches</a></li>
-                    <li><a href="#">Owned trackables</a></li>
-                    <li><a href="#">Discovered trackables</a></li>
+                    <li><a href="trackablelist.php?search=owner&user=<?php echo $user->getId() ?>">Owned trackables</a></li>
                 </ul>
             </div>
             <?php if (isset($_SESSION['user']) && $user->getId() == $_SESSION['user']->getId()): ?>

@@ -1,5 +1,6 @@
+<?php require_once 'libs/models/geocache.php'; ?>
+<h4><?php echo $data->trackablelistHeader ?></h4>
 <?php
-require_once 'libs/models/geocache.php';
 if (empty($data->trackablelist)):
     ?>
     No trackables found.

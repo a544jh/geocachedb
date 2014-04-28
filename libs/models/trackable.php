@@ -158,6 +158,21 @@ class Trackable {
     public function userIsOwner() {
         return loggedIn() && $_SESSION['user']->getId() === $this->getOwner();
     }
+    
+    public static function trackablesOwnedBy($userid) {
+        $sql = "SELECT * FROM trackables "
+                . "WHERE ownerid = ?;";
+        $query = getDbConnection()->prepare($sql);
+        $query->execute(array($userid));
+
+        $results = array();
+        foreach ($query->fetchAll(PDO::FETCH_OBJ) as $result) {
+            $trackable = new Trackable();
+            $trackable->setAllFields($result);
+            $results[] = $trackable;
+        }
+        return $results;
+    }
 
     public static function trackablesHeldBy($user) {
         //the latest GRAB logs for each trackable made by user
