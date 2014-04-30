@@ -183,5 +183,9 @@ class User {
     public function checkPassword($password) {
         return crypt($password, $this->getPassword()) === $this->getPassword();
     }
+    
+    public function getLink() {
+        return "<a href=\"userprofile.php?id=$this->id\">$this->username</a>";
+    }
 
 }

@@ -245,5 +245,9 @@ class Trackable {
             return Geocache::getGeocacheById($logResult->geocacheid);
         }
     }
+    
+    public function getLink() {
+        return "<a href=\"trackableview.php?id=$this->id\">$this->name</a>";
+    }
 
 }

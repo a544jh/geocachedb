@@ -1,5 +1,4 @@
 <?php
-//TODO: make a getLink() method...
 $user = User::getUserById($logentry->getUser());
 require_once 'libs/models/trackable.php';
 ?>
@@ -10,9 +9,8 @@ require_once 'libs/models/trackable.php';
             <?php
             $edited = $logentry->getEdited();
             if (isset($edited)):
-                ?><br>Edited <?php
-                echo date('Y-m-d H:i', strtotime($edited));
-            endif;
+                ?><br><small>Edited <?php echo date('Y-m-d H:i', strtotime($edited)); ?></small>
+            <?php endif;
             ?>
             <br>
             <?php if ($logentry->userIsOwner()): ?>
@@ -24,7 +22,7 @@ require_once 'libs/models/trackable.php';
                 <a class="btn btn-default btn-xs" href="deletelog.php?id=<?php echo $logentry->getId() ?>">Delete <span class="glyphicon glyphicon-remove"></span></a>
             <?php endif; ?>
             <div class="panel panel-geocachedb">
-                <a href="userprofile.php?id=<?php echo $user->getId() ?>"><?php echo $user->getUsername(); ?></a><br>
+                <?php echo $user->getLink() ?><br>
                 <?php echo $user->visittypeCount('found') ?> Found
             </div>
         </div>
@@ -35,7 +33,7 @@ require_once 'libs/models/trackable.php';
                 $visitMessage = Logentry::$visitMessages[$logentry->getVisittype()];
                 ?>
                 <div class="panel panel-geocachedb">
-                    <?php echo $visitMessage ?> <a href="geocacheview.php?id=<?php echo $logentry->getGeocacheid() ?>"><?php echo Geocache::getGeocacheById($logentry->getGeocacheid())->getName() ?></a>
+                    <?php echo $visitMessage . " " . Geocache::getGeocacheById($logentry->getGeocacheid())->getLink() ?>
                 </div>
                 <?php
             endif;
@@ -57,34 +55,34 @@ require_once 'libs/models/trackable.php';
                             case 'create':
                                 ?>
                                 Created
-                                <a href="trackableview.php?id=<?php echo $trackablelog->getTrackableid() ?>"><?php echo Trackable::getTrackableById($trackablelog->getTrackableid())->getName() ?></a>
                                 <?php
+                                echo Trackable::getTrackableById($trackablelog->getTrackableid())->getLink();
                                 break;
                             case 'grab':
                                 ?>
-                                Grabbed <a href="trackableview.php?id=<?php echo $trackablelog->getTrackableid() ?>"><?php echo Trackable::getTrackableById($trackablelog->getTrackableid())->getName() ?></a> from
-                                <?php if ($logentry->getGeocacheid() != null):
-                                    ?><a href="geocacheview.php?id=<?php echo $logentry->getGeocacheid() ?>"><?php echo Geocache::getGeocacheById($logentry->getGeocacheid())->getName() ?></a>
-                                <?php else: ?>
-                                    <a href="userprofile.php?id=<?php echo $trackablelog->getFromuser() ?>"><?php echo User::getUserById($trackablelog->getFromuser())->getUsername() ?></a> 
+                                Grabbed <?php echo Trackable::getTrackableById($trackablelog->getTrackableid())->getLink() ?> from
                                 <?php
+                                if ($logentry->getGeocacheid() != null):
+                                    echo Geocache::getGeocacheById($logentry->getGeocacheid())->getLink();
+                                else:
+                                    echo User::getUserById($trackablelog->getFromuser())->getLink();
                                 endif;
                                 break;
                             case 'drop':
                                 ?>
-                                Dropped <a href="trackableview.php?id=<?php echo $trackablelog->getTrackableid() ?>"><?php echo Trackable::getTrackableById($trackablelog->getTrackableid())->getName() ?></a> into 
-                                <a href="geocacheview.php?id=<?php echo $logentry->getGeocacheid() ?>"><?php echo Geocache::getGeocacheById($logentry->getGeocacheid())->getName() ?></a>
+                                Dropped <?php echo Trackable::getTrackableById($trackablelog->getTrackableid())->getLink() ?> into 
+                                <?php echo Geocache::getGeocacheById($logentry->getGeocacheid())->getLink(); ?>
                                 <?php
                                 break;
                             case 'visit':
                                 ?>
-                                <a href="trackableview.php?id=<?php echo $trackablelog->getTrackableid() ?>"><?php echo Trackable::getTrackableById($trackablelog->getTrackableid())->getName() ?></a>
-                                visited <a href="geocacheview.php?id=<?php echo $logentry->getGeocacheid() ?>"><?php echo Geocache::getGeocacheById($logentry->getGeocacheid())->getName() ?></a>
+                                <?php echo Trackable::getTrackableById($trackablelog->getTrackableid())->getLink() ?>
+                                visited <?php echo Geocache::getGeocacheById($logentry->getGeocacheid())->getLink(); ?>
                                 <?php
                                 break;
                             case 'comment':
                                 ?>
-                                Left a comment on <a href="trackableview.php?id=<?php echo $trackablelog->getTrackableid() ?>"><?php echo Trackable::getTrackableById($trackablelog->getTrackableid())->getName() ?></a>
+                                Left a comment on <?php echo Trackable::getTrackableById($trackablelog->getTrackableid())->getLink() ?>
                                 <?php
                                 break;
                         endswitch;

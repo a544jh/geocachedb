@@ -38,7 +38,7 @@
                 <?php foreach($data->geocachelist as $geocache): ?>
                 <tr>
                     <td><?php echo $geocache->getType(); ?></td>
-                    <td><?php if ($geocache->getArchived()):?><del><?php endif;?><a href="geocacheview.php?id=<?php echo $geocache->getId(); ?>"><?php echo $geocache->getName(); ?></a><?php if ($geocache->getArchived()):?></del><?php endif;?></td>
+                    <td><?php echo $geocache->getLink(); ?></td>
                     <td><?php echo $geocache->getDifficulty(); ?></td>
                     <td><?php echo $geocache->getTerrain(); ?></td>
                     <td><?php echo $geocache->visittypeCount('found'); ?></td>

@@ -344,5 +344,11 @@ class Geocache {
             return $result->count;
         }
     }
+    
+    public function getLink() {
+        $del = ($this->archived ? "<del>" : "");
+        $delend = ($this->archived ? "</del>" : "");
+        return "$del<a href=\"geocacheview.php?id=$this->id\">$this->name</a>$delend";
+    }
 
 }
