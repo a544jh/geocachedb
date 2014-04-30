@@ -98,7 +98,7 @@ incache</y:AttributeLabel>
 user
 timestamp
 comment
-geocahe
+geocache
 visittype</y:AttributeLabel>
             <y:MethodLabel/>
           </y:UML>

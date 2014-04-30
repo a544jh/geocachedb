@@ -1,11 +1,11 @@
-<nav class="navbar navbar-geocahedb" role="navigation">
+<nav class="navbar navbar-geocachedb" role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" href="frontpage.php">Geocahedb</a>
+            <a class="navbar-brand" href="frontpage.php">Geocachedb</a>
         </div>
         <div>
             <ul class="nav navbar-nav">
-                <li><a href="geocachelist.php">Search geocahes</a></li>
+                <li><a href="geocachelist.php">Search geocaches</a></li>
 
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Add new <b class="caret"></b></a>

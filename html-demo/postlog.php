@@ -13,7 +13,7 @@
     </head>
     <body>
         <?php include 'navbar.php'; ?>
-        <h4>Logging [geocaheid]</h4>
+        <h4>Logging [geocacheid]</h4>
         <form class="form-inline" role="form">
             <div class="form-group">
                 <label for="logType">Log type</label>

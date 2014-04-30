@@ -29,7 +29,7 @@
             <tbody>
                 <tr>
                     <td>Trad.</td>
-                    <td><a href="geocacheview.php">Geocahe name</a></td>
+                    <td><a href="geocacheview.php">Geocache name</a></td>
                     <td>1</td>
                     <td>2</td>
                     <td>129</td>
@@ -37,7 +37,7 @@
                 </tr>
                 <tr>
                     <td>Multi</td>
-                    <td>Geocahe name</td>
+                    <td>Geocache name</td>
                     <td>5</td>
                     <td>2</td>
                     <td>12</td>

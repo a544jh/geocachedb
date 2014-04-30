@@ -3,7 +3,7 @@
     <input type="hidden" name="search" value="name">
             <div class="form-group">
                 <label for="searchField">Search:</label>
-                <input type="text" class="form-control" id="searchField" placeholder="Geocahe name" name="name">
+                <input type="text" class="form-control" id="searchField" placeholder="Geocache name" name="name">
                 <label><input type="checkbox" name="published" <?php if(empty($_GET) || $_GET['published'] === 'on'): ?>checked<?php endif; ?>>Published</label>
                 <label><input type="checkbox" name="archived">Archived</label>
                 <button class="btn btn-sm" type="submit">Search</button>

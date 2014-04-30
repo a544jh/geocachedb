@@ -24,7 +24,7 @@ if (isset($_GET['search'])) {
     if ($_GET['search'] === 'coords') {
         $lat = filter_input(INPUT_GET, 'lat', FILTER_SANITIZE_STRING);
         $lon = filter_input(INPUT_GET, 'lon', FILTER_SANITIZE_STRING);
-        $header = "Geocahes near $lat, $lon";
+        $header = "Geocaches near $lat, $lon";
         if (!is_numeric($lat) || !is_numeric($lon)) {
             showView('geocachelist.php', array('geocachelist' => $geocachelist,
                 'error' => 'Coordinates must be numeric.',
