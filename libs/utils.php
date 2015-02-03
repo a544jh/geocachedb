@@ -14,5 +14,5 @@ function loggedIn(){
 }
 
 function userHasMinRole($role){
-    return (loggedIn() && $_SESSION['user']->getRole() >= 5);
+    return (loggedIn() && $_SESSION['user']->getRole() >= $role);
 }
